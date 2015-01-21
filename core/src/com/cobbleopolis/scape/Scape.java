@@ -2,94 +2,91 @@ package com.cobbleopolis.scape;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.badlogic.gdx.graphics.g3d.utils.FirstPersonCameraController;
+import com.badlogic.gdx.utils.Array;
 
 public class Scape implements ApplicationListener {
 	public PerspectiveCamera cam;
+	public FirstPersonCameraController camController;
 	public ModelBatch modelBatch;
-	public Model model;
+	public AssetManager assets;
+	public Array<ModelInstance> instances = new Array<ModelInstance>();
 	public Environment environment;
-	public CameraInputController camController;
-
-	public List<ModelInstance> models = new ArrayList<ModelInstance>();
+	public boolean loading;
 
 	@Override
-	public void create() {
+	public void create () {
+		modelBatch = new ModelBatch();
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		modelBatch = new ModelBatch();
-
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(10f, 10f, 10f);
+		cam.position.set(1f, 0f, 1f);
 		cam.lookAt(0,0,0);
-		cam.near = 1f;
+		cam.near = .1f;
 		cam.far = 300f;
 		cam.update();
 
-		camController = new CameraInputController(cam);
+		camController = new FirstPersonCameraController(cam);
 		Gdx.input.setInputProcessor(camController);
 
-		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(5f, 5f, 5f,
-				new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-				Usage.Position | Usage.Normal);
-		addModel(model, 0f, 0f ,0f);
-		model = modelBuilder.createSphere(5.5f, 5.5f, 5.5f, 32, 32, new Material(ColorAttribute.createDiffuse(Color.BLUE)), Usage.Position | Usage.Normal);
-		addModel(model, 6f, 0f, 0f);
+		assets = new AssetManager();
+		assets.load("test.g3db", Model.class);
+		assets.load("test2.g3db", Model.class);
+		loading = true;
+	}
 
-
+	private void doneLoading() {
+		addObject("test.g3db");
+		addObject("test2.g3db", 0f, 1.5f, 0f);
+		addObject("test2.g3db", 0f, 3f, 0f);
+		loading = false;
 	}
 
 	@Override
-	public void render() {
+	public void render () {
+		if (loading && assets.update())
+			doneLoading();
+		camController.update();
+
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		camController.update();
-
 		modelBatch.begin(cam);
-		for(int i = 0; i < models.size(); i++) {
-			modelBatch.render(models.get(i), environment);
-		}
+		modelBatch.render(instances, environment);
 		modelBatch.end();
 	}
 
 	@Override
-	public void dispose() {
+	public void dispose () {
 		modelBatch.dispose();
-		model.dispose();
+		instances.clear();
+		assets.dispose();
 	}
 
-	@Override
-	public void resize(int width, int height) {
+	public void resume () {
 	}
 
-	@Override
-	public void pause() {
+	public void resize (int width, int height) {
 	}
 
-	@Override
-	public void resume() {
+	public void pause () {
 	}
 
-	public void addModel(Model model, float x, float y, float z){
-		ModelInstance instance;
-		instance = new ModelInstance(model);
-		instance.transform.translate(x, y, z);
-		models.add(instance);
+	public void addObject(String modelName){
+		addObject(modelName, 0f, 0f, 0f);
+	}
+
+	public void addObject(String modelName, float x, float y, float z){
+		ModelInstance modelInst = new ModelInstance(assets.get(modelName, Model.class));
+		modelInst.transform.translate(x, y, z);
+		instances.add(modelInst);
 	}
 }
