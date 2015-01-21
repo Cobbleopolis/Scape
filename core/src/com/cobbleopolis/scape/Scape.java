@@ -10,6 +10,7 @@ public class Scape extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	int x = 0;
+	int y = 0;
 	
 	@Override
 	public void create () {
@@ -22,8 +23,9 @@ public class Scape extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, x, 0);
+		batch.draw(img, x, y);
 		batch.end();
 		x++;
+		y++;
 	}
 }
