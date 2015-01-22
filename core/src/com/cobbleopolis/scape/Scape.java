@@ -27,7 +27,7 @@ public class Scape implements ApplicationListener {
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.position.set(0f, 0f, -3f);
 		cam.lookAt(0,0,0);
 		cam.near = .1f;
@@ -46,6 +46,7 @@ public class Scape implements ApplicationListener {
 
 	private void doneLoading() {
 		addObject("test.g3db");
+		addObject("test.g3db", 0f, 4f, 0f);
 		addObject("test2.g3db", 0f, 1.5f, 0f);
 		addObject("test2.g3db", 0f, 3f, 0f);
 		addObject("monkey.g3db", 3f, 0f, 0f);
