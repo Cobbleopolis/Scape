@@ -16,7 +16,7 @@ public class Scape implements ApplicationListener {
 	public FirstPersonCameraController camController;
 	public ModelBatch modelBatch;
 	public AssetManager assets;
-	public Array<ModelInstance> instances = new Array<ModelInstance>();
+	public Array<ModelInstance> instances = new Array<>();
 	public Environment environment;
 	public boolean loading;
 
@@ -28,7 +28,7 @@ public class Scape implements ApplicationListener {
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(1f, 0f, 1f);
+		cam.position.set(0f, 0f, -3f);
 		cam.lookAt(0,0,0);
 		cam.near = .1f;
 		cam.far = 300f;
@@ -40,6 +40,7 @@ public class Scape implements ApplicationListener {
 		assets = new AssetManager();
 		assets.load("test.g3db", Model.class);
 		assets.load("test2.g3db", Model.class);
+		assets.load("monkey.g3db", Model.class);
 		loading = true;
 	}
 
@@ -47,6 +48,7 @@ public class Scape implements ApplicationListener {
 		addObject("test.g3db");
 		addObject("test2.g3db", 0f, 1.5f, 0f);
 		addObject("test2.g3db", 0f, 3f, 0f);
+		addObject("monkey.g3db", 3f, 0f, 0f);
 		loading = false;
 	}
 
@@ -55,6 +57,8 @@ public class Scape implements ApplicationListener {
 		if (loading && assets.update())
 			doneLoading();
 		camController.update();
+
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);

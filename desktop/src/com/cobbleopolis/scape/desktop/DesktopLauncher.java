@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.title = "Scape";
 //		config.useGL30 = true;
 		config.height = 720;
-		config.width = 1080;
+		config.width = 1280;
 //		config.fullscreen = true;
 		new LwjglApplication(new Scape(), config);
 	}
