@@ -20,6 +20,11 @@ public class Scape implements ApplicationListener {
 	public Environment environment;
 	public boolean loading;
 
+	public float red = 1f;
+	public float green = 1f;
+	public float blue = 1f;
+	public float change = .1f;
+
 	@Override
 	public void create () {
 		modelBatch = new ModelBatch();
@@ -28,7 +33,7 @@ public class Scape implements ApplicationListener {
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 		cam = new PerspectiveCamera(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(0f, 0f, -3f);
+		cam.position.set(0f, 0f, -9f);
 		cam.lookAt(0,0,0);
 		cam.near = .1f;
 		cam.far = 300f;
@@ -50,6 +55,10 @@ public class Scape implements ApplicationListener {
 		addObject("test2.g3db", 0f, 1.5f, 0f);
 		addObject("test2.g3db", 0f, 3f, 0f);
 		addObject("monkey.g3db", 3f, 0f, 0f);
+		addObject("monkey.g3db", -3f, 0f, 0f);
+		addObject("monkey.g3db", 0f, 0f, 3f);
+		addObject("monkey.g3db", 0f, 0f, -3f);
+		addObject("monkey.g3db", 0f, 0f, -3f);
 		loading = false;
 	}
 
@@ -59,7 +68,15 @@ public class Scape implements ApplicationListener {
 			doneLoading();
 		camController.update();
 
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+//		red += change;
+//		green += change;
+//		blue += change;
+//
+//		if(red >= 1f || green >= 1f || blue >= 1f){
+//			change *= -1;
+//		}
+
+		Gdx.gl.glClearColor(red, green, blue, 1f);
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -80,6 +97,7 @@ public class Scape implements ApplicationListener {
 	}
 
 	public void resize (int width, int height) {
+
 	}
 
 	public void pause () {
