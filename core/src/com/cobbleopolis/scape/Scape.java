@@ -20,10 +20,13 @@ public class Scape implements ApplicationListener {
 	public Environment environment;
 	public boolean loading;
 
-	public float red = 1f;
-	public float green = 1f;
-	public float blue = 1f;
-	public float change = .1f;
+	public float red = 0f;
+	public float green = 0f;
+	public float blue = 0f;
+
+	public float changeRed = .025f / 2;
+	public float changeGreen = .025f / 2;
+	public float changeBlue = .025f / 2;
 
 	@Override
 	public void create () {
@@ -68,13 +71,23 @@ public class Scape implements ApplicationListener {
 			doneLoading();
 		camController.update();
 
-//		red += change;
-//		green += change;
-//		blue += change;
-//
-//		if(red >= 1f || green >= 1f || blue >= 1f){
-//			change *= -1;
-//		}
+		red += changeRed;
+		green += -changeGreen;
+		blue += -changeBlue;
+
+		System.out.println(red * 255 + " | " + green * 255 + " | " + blue * 255);
+
+		if(red > 1f || red < 0f){
+			changeRed *= -1;
+		}
+
+		if(green > 1f || green < 0f){
+			changeGreen *= -1;
+		}
+
+		if(blue > 1f || blue < 0f){
+			changeBlue *= -1;
+		}
 
 		Gdx.gl.glClearColor(red, green, blue, 1f);
 
