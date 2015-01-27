@@ -24,9 +24,9 @@ public class Scape implements ApplicationListener {
 	public float green = 0f;
 	public float blue = 0f;
 
-	public float changeRed = .05f / 2;
-	public float changeGreen = .0125f / 2;
-	public float changeBlue = .025f / 2;
+	public float changeRed = .05f;
+	public float changeGreen = .0125f;
+	public float changeBlue = .025f;
 
 	@Override
 	public void create () {
