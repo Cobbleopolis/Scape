@@ -24,7 +24,7 @@ public class Scape implements ApplicationListener {
 	public float green = 0f;
 	public float blue = 0f;
 
-	public float changeRed = .025f / 2;
+	public float changeRed = .05f / 2;
 	public float changeGreen = .025f / 2;
 	public float changeBlue = .025f / 2;
 
@@ -49,6 +49,7 @@ public class Scape implements ApplicationListener {
 		assets.load("test.g3db", Model.class);
 		assets.load("test2.g3db", Model.class);
 		assets.load("monkey.g3db", Model.class);
+		assets.load("sphere.g3db", Model.class);
 		loading = true;
 	}
 
@@ -62,6 +63,7 @@ public class Scape implements ApplicationListener {
 		addObject("monkey.g3db", 0f, 0f, 3f);
 		addObject("monkey.g3db", 0f, 0f, -3f);
 		addObject("monkey.g3db", 0f, 0f, -3f);
+		addObject("sphere.g3db", 0f, 5f, 0f);
 		loading = false;
 	}
 
@@ -75,7 +77,7 @@ public class Scape implements ApplicationListener {
 		green += -changeGreen;
 		blue += -changeBlue;
 
-		System.out.println(red * 255 + " | " + green * 255 + " | " + blue * 255);
+//		System.out.println(red * 255 + " | " + green * 255 + " | " + blue * 255);
 
 		if(red > 1f || red < 0f){
 			changeRed *= -1;
