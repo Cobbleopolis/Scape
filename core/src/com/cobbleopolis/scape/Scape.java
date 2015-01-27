@@ -25,7 +25,7 @@ public class Scape implements ApplicationListener {
 	public float blue = 0f;
 
 	public float changeRed = .05f / 2;
-	public float changeGreen = .025f / 2;
+	public float changeGreen = .0125f / 2;
 	public float changeBlue = .025f / 2;
 
 	@Override
@@ -46,24 +46,18 @@ public class Scape implements ApplicationListener {
 		Gdx.input.setInputProcessor(camController);
 
 		assets = new AssetManager();
-		assets.load("test.g3db", Model.class);
-		assets.load("test2.g3db", Model.class);
 		assets.load("monkey.g3db", Model.class);
-		assets.load("sphere.g3db", Model.class);
+		assets.load("scene.g3db", Model.class);
 		loading = true;
 	}
 
 	private void doneLoading() {
-		addObject("test.g3db");
-		addObject("test.g3db", 0f, 4f, 0f);
-		addObject("test2.g3db", 0f, 1.5f, 0f);
-		addObject("test2.g3db", 0f, 3f, 0f);
 		addObject("monkey.g3db", 3f, 0f, 0f);
 		addObject("monkey.g3db", -3f, 0f, 0f);
 		addObject("monkey.g3db", 0f, 0f, 3f);
 		addObject("monkey.g3db", 0f, 0f, -3f);
 		addObject("monkey.g3db", 0f, 0f, -3f);
-		addObject("sphere.g3db", 0f, 5f, 0f);
+		addObject("scene.g3db");
 		loading = false;
 	}
 
